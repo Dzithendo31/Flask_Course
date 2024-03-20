@@ -1,14 +1,34 @@
-from flask import Flask, jsonify,request
+from flask import Flask, jsonify,request,render_template
+#Rewnder Template is inbulinf to Flas
 
 app = Flask(__name__)
 
+user = {
+    'name':'Dhara',
+    'pic': 'https://shiftart.com/wp-content/uploads/2017/04/RC-Profile-Square.jpg'
+}
+data_list = [
+    {'name': 'Dhara', 'pic': 'https://shiftart.com/wp-content/uploads/2017/04/RC-Profile-Square.jpg'},
+    {'name': 'John', 'pic': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXw3NjA4Mjc3NHx8ZW58MHx8fHx8'},
+    {'name': 'Emma', 'pic': 'https://profilemagazine.com/wp-content/uploads/2020/04/Ajmere-Dale-Square-thumbnail.jpg'}
+]
+hobbies = ["Gaming", "Reading", "Soccer", "Ballet", "Gyming", "Yoga"]
 @app.route("/")
 def hello_world():
     return "<p>Hddsddqq, 🥹</p>"
 
 @app.route("/about")
 def about_page():
-    return "<h1>About Page</h1>"
+    return render_template("about.html",people =data_list)
+
+
+@app.route("/profile")
+def profile_page():
+    return render_template("profile.html",name=user["name"],hobbies = hobbies)
+
+@app.route("/home")
+def profile_page():
+    return render_template("profile.html",name=user["name"],hobbies = hobbies)
 
 
 @app.get('/movies')
@@ -37,7 +57,8 @@ def gethighestID(movies):
 #http://127.0.0.1:5000/movies/99
 @app.get('/movies/<id>')#Id is now a varibles
 def get_movie(id):
-    movie = getMovieByID(id,movies)
+    movie = next((movie for movie in movies if movie['id']==id),None)
+    #movie = getMovieByID(id,movies)
     if movie == None:
         error = {'message':'Movie Not found'}
         return jsonify(error),404
@@ -46,14 +67,41 @@ def get_movie(id):
 
 @app.delete('/movies/<id>')
 def delete_movie(id):
+    movie_delete = next((movie for movie in movies if movie['id']==id),None)
     movie_delete = getMovieByID(id,movies)
     if movie_delete == None:
         error = {'message':'Movie Not found'}
         return jsonify(error),404
     movies.remove(movie_delete)
     return movie_delete
+# @app.delete("/movies/<id>")
+# def delete_movie(id):
+#     # Permission to modify the lexical scope variable
+#     filtered_movie = next((movie for movie in movies if movie["id"] == id), None)
+ 
+#     if filtered_movie:
+#         movies.remove(filtered_movie)
+#         return jsonify({"message": "Deleted Successfully", "data": filtered_movie})
+#     else:
+#         return jsonify({"message": "Movie not found"}), 404
 
-
+#Combination and Post I would say
+@app.put('/movies/<id>')
+def put_movie(id):
+    data = request.json #Get data from the JSON
+    #Get movie
+    movie = next((movie for movie in movies if movie['id']==id),None)
+    if movie:
+        #movies.remove(movie)
+        movie.update(data)
+        #movies.append(movie)
+        return jsonify({'message':'Movie Updated','data':movie}),200
+    return jsonify({'message':'Movie Not found'}),404
+# @app.put("/movies/<id>")
+# def update_movie_by_id(id):
+#     movie_idx = next((idx for idx, movie in enumerate(movies) if movie["id"] == id), None) # same memory
+#     body = request.json
+#     movies[movie_idx] = {**movies[movie_idx], **body}
 def getMovieByID(id,movies):
     for movie in movies:
         if movie['id'] == id:

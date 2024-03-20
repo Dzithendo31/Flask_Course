@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 100px;
+            border-radius: 50%;
+            place-content: center;
+        }
+
+        body {
+            margin: 0;
+            display: grid;
+            place-content: center;
+            min-height: 100vh;
+        }
+
+        .cont {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="cont">
+        {% for user in people %}
+        <div>
+            <img src="{{ user.pic }}" alt="">
+            <h1>Hello, {{ user.name }}</h1>
+        </div>
+        {% endfor %}
+    </section>
+
+
+</body>
+
+</html>

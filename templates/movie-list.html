@@ -57,12 +57,12 @@
         <p>{{movie.summary}}</p>
         <div class="movie-actions">
           <a href="/movie-list/{{movie.id}}">View More</a>
-          <form action="{{url_for('delete_movie_by_id')}}" method="POST">
+          <form action="{{url_for('movie_list_bp.delete_movie_by_id')}}" method="POST">
             <input name="movie_id" type="text" value="{{movie.id}}" hidden />
             <button type="submit">Delete</button>
           </form>
           <!-- Update Button, should bring Like -->
-          <form action="{{url_for('delete_movie_by_id')}}" method="POST">
+          <form action="{{url_for('movie_list_bp.delete_movie_by_id')}}" method="POST">
             <input name="movie_id" type="text" value="{{movie.id}}" hidden />
             <button type="submit">Update</button>
           </form>

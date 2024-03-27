@@ -16,7 +16,7 @@
 </style>
 <body>
     <h2>Add Movie</h2>
-    <form class="add-movie-form" action="{{ url_for('create_movie') }}" method="POST">
+    <form class="add-movie-form" action="{{ url_for('movie_list_bp.create_movie') }}" method="POST">
         <input type="text" name="name" placeholder="Name"><br><br>
         <input type="text" name="rating" placeholder="Rating"><br><br>
         <input type="text" name="summary" placeholder="Summary"><br><br>

@@ -54,13 +54,7 @@ hobbies = ["Gaming", "Reading", "Soccer", "Ballet", "Gyming", "Yoga"]
 @app.route("/profile")  # HOF
 def profile_page():
     return render_template("profile.html", name=name, hobbies=hobbies)
- 
- 
-@app.route("/login", methods=["GET"])  # HOF
-def login_page():
-    return render_template("login-form.html")
- 
- 
+  
 # Task - Welcome message
 @app.route("/dashboard", methods=["POST"])  # HOF
 def dashboard_page():
@@ -115,12 +109,6 @@ def register_page():
         except Exception as e:
           db.session.rollback()  # Undo the change
           return f"<h1>Successss Not</h1>"
-        #Now connect to the database
-        
-        
-    #So in Get we get the Token and in Post we validate it.
-
-    #This line wil run on get 
     return render_template("register.html", form =form)
 
 class User(db.Model):
@@ -138,3 +126,38 @@ class User(db.Model):
             "real_name": self.real_name,
             "password": self.password
         }
+
+# LogIn details
+class LoginForm(FlaskForm):
+    #Second Parameter is the type of Validations
+    username = StringField('Username',validators=[InputRequired(),Length(min=3)])
+    Realname = StringField('Realname',validators=[InputRequired(),Length(min=3)])
+    password = PasswordField('Password',validators=[InputRequired(),Length(min=8,max=12),])
+    submit = SubmitField("Log In")
+
+    #the method will automatically run when  form.validate_on_submit() is run
+    def validate_username(self,field):
+        user_from_db = User.query.filter(User.username == field.data).first()
+        if not user_from_db:
+            raise ValidationError("Invalid Credentitals")
+        
+    def validate_password(self,field):
+        user_from_db = User.query.filter(User.username == field.data).first()
+        if user_from_db:
+          user_db_data = user_from_db.to_dict()
+          formPassowrd = field.data
+          print(user_db_data, formPassowrd)
+          if user_db_data['password'] != formPassowrd:
+              raise ValidationError("Username is taken")
+
+
+
+@app.route("/login", methods =["GET","POST"])  # HOF
+def login_page():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        return "<h1>Log In Successful</h1>"
+    return render_template("login-form.html", form = form)
+ 
+

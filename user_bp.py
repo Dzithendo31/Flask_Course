@@ -1,0 +1,105 @@
+from flask import Flask, jsonify, request, render_template, Blueprint
+from flask_sqlalchemy import SQLAlchemy
+from movies_bp import db
+#Imports for Forma and Form validations
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length, Email, EqualTo,ValidationError
+
+user_bp = Blueprint('user_bp',__name__)
+
+#Create a class from
+#With Variables being the form feilds that we have
+
+class RegistrationForm(FlaskForm):
+    #Second Parameter is the type of Validations
+    username = StringField('Username',validators=[InputRequired(),Length(min=3)])
+    Realname = StringField('Realname',validators=[InputRequired(),Length(min=3)])
+    #email = StringField('email',validators=[InputRequired(),Email()])
+    password = PasswordField('Password',validators=[
+        InputRequired(), 
+        Length(min=8,max=12),])
+        #EqualTo('confirm_password', message='Passwords must match.')])
+    #confirmPassword = PasswordField('Password',validators=[InputRequired(), Length(min=8,max=12)])
+
+    #Finally we need the Submit Button
+    submit = SubmitField("Sign up")
+
+    #the method will automatically run when  form.validate_on_submit() is run
+    def validate_username(self,field):
+        print("Validate Username",field.data)
+        if User.query.filter(User.username == field.data).first():
+            raise ValidationError("Username is taken")
+
+@user_bp.route("/register", methods =["GET","POST"])  # HOF
+def register_page():
+    #Create a new ......?
+    form = RegistrationForm()
+    #So the method is bothe a get, and a post, only submit when its a post
+    if form.validate_on_submit():
+        print(form.username.data, form.password.data)
+        new_user = User(
+            username=form.username.data,
+            real_name = form.Realname.data, 
+            password=form.password.data
+        )
+        #try connect to database
+        try:
+          db.session.add(new_user)
+          db.session.commit()
+          # movies.append(new_movie)
+          result = {"message": "Added successfully", "data": new_user.to_dict()}
+          return "<h1>Successss</h1>"
+        except Exception as e:
+          db.session.rollback()  # Undo the change
+          return f"<h1>Successss Not</h1>"
+    return render_template("register.html", form =form)
+
+class User(db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.String(50), primary_key=True,default=lambda: str(uuid.uuid4()))
+    username = db.Column(db.String(100))
+    real_name = db.Column(db.String(100))
+    password = db.Column(db.String(100))
+ 
+    # JSON - Keys
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "real_name": self.real_name,
+            "password": self.password
+        }
+
+# LogIn details
+class LoginForm(FlaskForm):
+    #Second Parameter is the type of Validations
+    username = StringField('Username',validators=[InputRequired(),Length(min=3)])
+    Realname = StringField('Realname',validators=[InputRequired(),Length(min=3)])
+    password = PasswordField('Password',validators=[InputRequired(),Length(min=8,max=12),])
+    submit = SubmitField("Log In")
+
+    #the method will automatically run when  form.validate_on_submit() is run
+    def validate_username(self,field):
+        user_from_db = User.query.filter(User.username == field.data).first()
+        if not user_from_db:
+            raise ValidationError("Invalid Credentitals")
+        
+    def validate_password(self,field):
+        user_from_db = User.query.filter(User.username == field.data).first()
+        if user_from_db:
+          user_db_data = user_from_db.to_dict()
+          formPassowrd = field.data
+          print(user_db_data, formPassowrd)
+          if user_db_data['password'] != formPassowrd:
+              raise ValidationError("Username is taken")
+
+
+
+@user_bp.route("/login", methods =["GET","POST"])  # HOF
+def login_page():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        return "<h1>Log In Successful</h1>"
+    return render_template("login-form.html", form = form)

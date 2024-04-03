@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-from app import Movie, db
+from movies_bp import Movie, db
 
 
 movie_list_bp = Blueprint('movie_list_bp',__name__)

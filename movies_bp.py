@@ -1,8 +1,7 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-import uuid
+from models.movie import Movie, db
 
-db = SQLAlchemy()
 movies_bp = Blueprint('movies',__name__)
 
 # GET -> /movies -> JSON
@@ -82,23 +81,5 @@ def create_movies():
         return jsonify({"message": str(e)}), 500
 
 # Model (SQLAlchemy) == Schema
-class Movie(db.Model):
-    __tablename__ = "movies"
-    id = db.Column(db.String(50), primary_key=True,default=lambda: str(uuid.uuid4()))
-    name = db.Column(db.String(100))
-    poster = db.Column(db.String(255))
-    rating = db.Column(db.Float)
-    summary = db.Column(db.String(500))
-    trailer = db.Column(db.String(255))
- 
-    # JSON - Keys
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "poster": self.poster,
-            "rating": self.rating,
-            "summary": self.summary,
-            "trailer": self.trailer,
-        }
+
 

@@ -1,17 +1,12 @@
 import os
-from flask import Flask, jsonify, request, render_template
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 from sqlalchemy.sql import text
 from dotenv import load_dotenv
-from sqlalchemy import select
-import uuid
-
-
 
 #Register the about_bp 
 from about_bp import about_bp
 #Register the movies_bp 
-from movies_bp import movies_bp, db
+from movies_bp import movies_bp
 #Register the movie_list dp
 from movie_list_bp import movie_list_bp
 #Register the UserBP 
@@ -20,7 +15,10 @@ from user_bp import user_bp
 from main_bp import main_bp
 load_dotenv()  # load -> os env (environmental variables)
 
- 
+
+#Import the DB
+from extensions import db
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FORM_SECRET_KEY")
 # General pattern

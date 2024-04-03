@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-from movies_bp import db
+from models.user import User, db
 #Imports for Forma and Form validations
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -55,21 +55,7 @@ def register_page():
           return f"<h1>Successss Not</h1>"
     return render_template("register.html", form =form)
 
-class User(db.Model):
-    __tablename__ = "users"
-    id = db.Column(db.String(50), primary_key=True,default=lambda: str(uuid.uuid4()))
-    username = db.Column(db.String(100))
-    real_name = db.Column(db.String(100))
-    password = db.Column(db.String(100))
- 
-    # JSON - Keys
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "username": self.username,
-            "real_name": self.real_name,
-            "password": self.password
-        }
+
 
 # LogIn details
 class LoginForm(FlaskForm):

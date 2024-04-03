@@ -4,15 +4,15 @@ from sqlalchemy.sql import text
 from dotenv import load_dotenv
 
 #Register the about_bp 
-from about_bp import about_bp
+from routes.about_bp import about_bp
 #Register the movies_bp 
-from movies_bp import movies_bp
+from routes.movies_bp import movies_bp
 #Register the movie_list dp
-from movie_list_bp import movie_list_bp
+from routes.movie_list_bp import movie_list_bp
 #Register the UserBP 
-from user_bp import user_bp
+from routes.user_bp import user_bp
 #Register the UserBP 
-from main_bp import main_bp
+from routes.main_bp import main_bp
 load_dotenv()  # load -> os env (environmental variables)
 
 

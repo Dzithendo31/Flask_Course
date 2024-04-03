@@ -1,41 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <style>
-        .body{
-            margin: 100px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Log In</h1>
-        <form method="POST" action="">
-            {{form.hidden_tag()}}
-    
-            {% if form.username.errors %}
-                {%for error in form.username.errors%}
-                <div style="color: crimson;">{{error}}</div>
-                {%endfor %}
-            {% endif%}
-            <div class="form-group">
-                {{form.username.label}}:{{form.username(placeholder="Rashay",class="form-control")}}
-                <br>
-            </div>
-            <div class="form-group">
-            {{form.Realname.label}}:{{form.Realname(class="form-control")}}
-            <br>
-            </div>
-            <div class="form-group">
-            {{form.password.label}}:{{form.password(class="form-control")}}
-            <br>
-            </div>
-            {{form.submit(class="btn btn-primary")}}
-        </form>
-    </div>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Movie List{% endblock %}
+
+{% block content %}
+<h1>Log In</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+
+    {% if form.username.errors %}
+    {%for error in form.username.errors%}
+    <div style="color: crimson;">{{error}}</div>
+    {%endfor %}
+    {% endif%}
+    <div class="form-group">
+        {{form.username.label}}:{{form.username(placeholder="Rashay",class="form-control")}}
+        <br>
+    </div>
+    <div class="form-group">
+        {{form.Realname.label}}:{{form.Realname(class="form-control")}}
+        <br>
+    </div>
+    <div class="form-group">
+        {{form.password.label}}:{{form.password(class="form-control")}}
+        <br>
+    </div>
+    {{form.submit(class="btn btn-primary")}}
+</form>
+</div>
+{% endblock %}

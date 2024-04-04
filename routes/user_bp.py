@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, render_template, Blueprint, redirect, url_for
-
+from werkzeug.security import generate_password_hash, check_password_hash
 import flask
 from flask_login import login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
@@ -41,10 +41,13 @@ def register_page():
     #So the method is bothe a get, and a post, only submit when its a post
     if form.validate_on_submit():
         print(form.username.data, form.password.data)
+        #But this will Require space
+        password_hash = generate_password_hash(form.password.data)
         new_user = User(
             username=form.username.data,
-            real_name = form.Realname.data, 
-            password=form.password.data
+            real_name = form.Realname.data,
+            #This is where the hashPassword Occurs 
+            password=password_hash
         )
         #try connect to database
         try:
@@ -80,7 +83,7 @@ class LoginForm(FlaskForm):
           user_db_data = user_from_db.to_dict()
           formPassowrd = field.data
           print(user_db_data, formPassowrd)
-          if user_db_data['password'] != formPassowrd:
+          if not check_password_hash(user_db_data['password'],formPassowrd):
               raise ValidationError("Invalid Credentials")
 
 

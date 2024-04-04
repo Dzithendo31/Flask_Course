@@ -1,4 +1,7 @@
-from flask import Flask, jsonify, request, render_template, Blueprint
+from flask import Flask, jsonify, request, render_template, Blueprint, redirect, url_for
+
+import flask
+from flask_login import login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from models.user import User, db
 #Imports for Forma and Form validations
@@ -78,14 +81,29 @@ class LoginForm(FlaskForm):
           formPassowrd = field.data
           print(user_db_data, formPassowrd)
           if user_db_data['password'] != formPassowrd:
-              raise ValidationError("Username is taken")
+              raise ValidationError("Invalid Credentials")
 
 
 
-@user_bp.route("/login", methods =["GET","POST"])  # HOF
+
+@user_bp.route("/login", methods=["GET", "POST"])
 def login_page():
     form = LoginForm()
-
     if form.validate_on_submit():
-        return "<h1>Log In Successful</h1>"
-    return render_template("login-form.html", form = form)
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            login_user(user)#Token is Stored in the browser.
+            flask.flash('Logged in successfully.')
+            # Redirect to the next page if available, otherwise to the home page
+            next_page = flask.request.args.get('next') or url_for('movie_list_bp.movie_list_page')
+            return redirect(next_page)
+        else:
+            flask.flash('Invalid username or password.', 'error')
+    return render_template("login-form.html", form=form)
+
+
+@user_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect('/login')

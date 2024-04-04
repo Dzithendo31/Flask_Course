@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
+from flask_login import login_required
 from flask_sqlalchemy import SQLAlchemy
 from models.movie import Movie, db
 
@@ -27,6 +28,7 @@ def delete_movie_by_id():
 # Task 2: /movies-list -> Display the data on the page from Azure (MSSQL)
 # Movie list dashboard
 @movie_list_bp.route("/")  # HOF
+@login_required
 def movie_list_page():
     movie_list = Movie.query.all()  # Select * from movies | movie_list iterator
     data = [movie.to_dict() for movie in movie_list]  # list of dictionaries

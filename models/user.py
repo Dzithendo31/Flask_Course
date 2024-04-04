@@ -5,14 +5,13 @@ import uuid
 
 #absoulut from the base where is the File
 from extensions import db
-
-class User(db.Model):
+from flask_login import UserMixin
+class User(UserMixin,db.Model):
     __tablename__ = "users"
     id = db.Column(db.String(50), primary_key=True,default=lambda: str(uuid.uuid4()))
     username = db.Column(db.String(100))
     real_name = db.Column(db.String(100))
     password = db.Column(db.String(100))
- 
     # JSON - Keys
     def to_dict(self):
         return {
@@ -21,3 +20,5 @@ class User(db.Model):
             "real_name": self.real_name,
             "password": self.password
         }
+    def get_id(self):
+        return self.id

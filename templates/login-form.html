@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Movie List{% endblock %}
+
+{% block content %}
+<h1>Log In</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+
+    {% if form.username.errors %}
+    {%for error in form.username.errors%}
+    <div style="color: crimson;">{{error}}</div>
+    {%endfor %}
+    {% endif%}
+    <div class="form-group">
+        {{form.username.label}}:{{form.username(placeholder="Rashay",class="form-control")}}
+        <br>
+    </div>
+    <div class="form-group">
+        {{form.Realname.label}}:{{form.Realname(class="form-control")}}
+        <br>
+    </div>
+    <div class="form-group">
+        {{form.password.label}}:{{form.password(class="form-control")}}
+        <br>
+    </div>
+    {{form.submit(class="btn btn-primary")}}
+</form>
+</div>
+{% endblock %}

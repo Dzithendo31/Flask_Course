@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add movie form</title>
+</head>
+<style>
+     .add-movie-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+</style>
+<body>
+    <h2>Add Movie</h2>
+    <form class="add-movie-form" action="{{ url_for('movie_list_bp.create_movie') }}" method="POST">
+        <input type="text" name="name" placeholder="Name"><br><br>
+        <input type="text" name="rating" placeholder="Rating"><br><br>
+        <input type="text" name="summary" placeholder="Summary"><br><br>
+        <input type="text" name="poster" placeholder="Poster URL"><br><br>
+        <input type="text" name="trailer" placeholder="trailer"><br><br>
+        <button type="submit">Add Movie</button>
+    </form>
+</body>
+</html>

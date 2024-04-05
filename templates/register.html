@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Movie List{% endblock %}
+
+{% block content %}
+<h1>Register</h1>
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+
+    {% if form.username.errors %}
+    {%for error in form.username.errors%}
+    <div style="color: crimson;">{{error}}</div>
+    {%endfor %}
+    {% endif%}
+
+    {{form.username.label}}:{{form.username(placeholder="Rashay")}}
+    <br>
+    {{form.Realname.label}}:{{form.Realname()}}
+    <br>
+    {{form.password.label}}:{{form.password()}}
+    <br>
+    {{form.submit()}}
+</form>
+{% endblock %}

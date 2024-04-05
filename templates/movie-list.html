@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - My Website{% endblock %}
+
+{% block content %}
+<div class="movie-list-container">
+  {% for movie in movies %}
+  <div class="movie-container">
+    <img class="movie-poster" src="{{movie.poster}}" alt="{{movie.name}}" />
+    <div class="movie-spec">
+      <h2 class="movie-name">{{movie.name}}</h2>
+      <p>⭐ {{movie.rating}}</p>
+    </div>
+    <p>{{movie.summary}}</p>
+    <div class="movie-actions">
+      <a href="/movie-list/{{movie.id}}">View More</a>
+      <form action="{{url_for('movie_list_bp.delete_movie_by_id')}}" method="POST">
+        <input name="movie_id" type="text" value="{{movie.id}}" hidden />
+        <button type="submit" class="btn btn-danger" >Delete</button>
+      </form>
+      <!-- Update Button, should bring Like -->
+      <form action="{{url_for('movie_list_bp.delete_movie_by_id')}}" method="POST">
+        <input name="movie_id" type="text" value="{{movie.id}}" hidden />
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

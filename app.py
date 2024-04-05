@@ -17,7 +17,6 @@ from routes.main_bp import main_bp
 load_dotenv()  # load -> os env (environmental variables)
 from flask_login import LoginManager
 
-#Import the DB
 from extensions import db
 
 app = Flask(__name__)

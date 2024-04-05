@@ -1,5 +1,4 @@
 import uuid
-from werkzeug.security import generate_password_hash, check_password_hash
 #Relative Import ..2Folders Up, .1Folder up
 #from extensions import db
 

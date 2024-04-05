@@ -1,8 +1,7 @@
-from flask import Flask, jsonify, request, render_template, Blueprint, redirect, url_for
+from flask import render_template, Blueprint, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 import flask
 from flask_login import login_required, login_user, logout_user
-from flask_sqlalchemy import SQLAlchemy
 from models.user import User, db
 #Imports for Forma and Form validations
 from flask_wtf import FlaskForm

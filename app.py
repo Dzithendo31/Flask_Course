@@ -24,13 +24,13 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FORM_SECRET_KEY")
 # General pattern
 # mssql+pyodbc://<username>:<password>@<dsn_name>?driver=<driver_name>
-#connection_string = os.environ.get("AZURE_DATABASE_URL")
+connection_string = os.environ.get("AZURE_DATABASE_URL")
 
 #Connecting to Local
 #PF35AXQW\SQLEXPRESS
 # mssql+pyodbc://@<server_name>/<db_name>?driver=<driver_name>
 
-connection_string = os.environ.get("LOCAL_DATABASE_URL")
+#connection_string = os.environ.get("LOCAL_DATABASE_URL")
 app.config["SQLALCHEMY_DATABASE_URI"] = connection_string
 db.init_app(app)
 
